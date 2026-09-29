@@ -1,0 +1,263 @@
+CREATE TABLE ELECTION1_INFO (
+    eid NUMBER(10),
+    etitle VARCHAR2(255),
+    startdate DATE,
+    enddate DATE,
+    CONSTRAINT ELECTION1_INFO_pk PRIMARY KEY (eid)
+);
+
+DESC ELECTION1_INFO;
+
+INSERT INTO ELECTION1_INFO (eid, etitle, startdate, enddate) VALUES (1, 'Presidential Election 2024', TO_DATE('2024-05-01', 'YYYY-MM-DD'), TO_DATE('2024-05-10', 'YYYY-MM-DD'));
+INSERT INTO ELECTION1_INFO (eid, etitle, startdate, enddate) VALUES (2, 'Local Council Elections', TO_DATE('2024-06-15', 'YYYY-MM-DD'), TO_DATE('2024-06-20', 'YYYY-MM-DD'));
+INSERT INTO ELECTION1_INFO (eid, etitle, startdate, enddate) VALUES (3, 'State Governor Election', TO_DATE('2024-09-05', 'YYYY-MM-DD'), TO_DATE('2024-09-15', 'YYYY-MM-DD'));
+INSERT INTO ELECTION1_INFO (eid, etitle, startdate, enddate) VALUES (4, 'Midterm Elections 2024', TO_DATE('2024-11-01', 'YYYY-MM-DD'), TO_DATE('2024-11-10', 'YYYY-MM-DD'));
+INSERT INTO ELECTION1_INFO (eid, etitle, startdate, enddate) VALUES (5, 'Referendum on New Policy', TO_DATE('2024-12-01', 'YYYY-MM-DD'), TO_DATE('2024-12-05', 'YYYY-MM-DD'));
+
+select * from ELECTION1_INFO;
+
+
+
+CREATE TABLE CANDIDATE1_INFO (
+    cid NUMBER(10),
+    cname VARCHAR2(255),
+    post VARCHAR2(255),
+    CONSTRAINT CANDIDATE1_INFO_pk PRIMARY KEY (cid)
+);
+
+DESC CANDIDATE1_INFO;
+
+INSERT INTO CANDIDATE1_INFO (cid, cname, post) VALUES (1, 'Alice Smith', 'Mayor');
+INSERT INTO CANDIDATE1_INFO (cid, cname, post) VALUES (2, 'Bob Johnson', 'Council Member');
+INSERT INTO CANDIDATE1_INFO (cid, cname, post) VALUES (3, 'Carol Williams', 'Governor');
+INSERT INTO CANDIDATE1_INFO (cid, cname, post) VALUES (4, 'David Brown', 'Senator');
+INSERT INTO CANDIDATE1_INFO (cid, cname, post) VALUES (5, 'Eva Green', 'Treasurer');
+
+select * from CANDIDATE1_INFO;
+
+
+CREATE VIEW C_P AS SELECT cname,post FROM candidate1_info WHERE post LIKE '%Governor%';
+select * from C_P;
+
+
+CREATE VIEW Complex_E_C AS SELECT e.eid,e.etitle, c.cname, COUNT(c.cid) AS candidate_count FROM election1_info e JOIN candidate1_info c ON c.cid!=e.eid GROUP By e.eid, e.etitle,c.cname;
+
+DESC complex_E_C;
+select * from Complex_E_C;
+
+
+
+-------------------------------------------------------------------------
+
+
+CREATE TABLE Bus_Tickets (
+    Ticket_No VARCHAR(10) PRIMARY KEY,
+    Passenger_ID VARCHAR(10),
+    Travel_Date DATE,
+    Seat_No INT,
+    Status VARCHAR(20),
+    Bus_No VARCHAR(10),
+    Route_No VARCHAR(10)
+);
+
+
+CREATE TABLE Buses (
+    Bus_No VARCHAR(10) PRIMARY KEY,
+    Seating_Capacity INT,
+    Type VARCHAR(10),
+    Driver_Name VARCHAR(100)
+);
+
+
+CREATE TABLE Route (
+    Route_No VARCHAR(10) PRIMARY KEY,
+    Start_Point VARCHAR(100),
+    Destination VARCHAR(100),
+    Total_Distance VARCHAR(20)
+);
+
+
+CREATE TABLE Passenger (
+    Passenger_ID VARCHAR(10) PRIMARY KEY,
+    Passenger_Name VARCHAR(100),
+    Contact_No VARCHAR(15)
+);
+
+
+-- Insert values into the Passenger table
+BEGIN
+    INSERT INTO Passenger (Passenger_ID, Passenger_Name, Contact_No) VALUES ('P001', 'Alice Green', '1234567890');
+    INSERT INTO Passenger (Passenger_ID, Passenger_Name, Contact_No) VALUES ('P002', 'Bob Brown', '0987654321');
+    INSERT INTO Passenger (Passenger_ID, Passenger_Name, Contact_No) VALUES ('P003', 'Carol White', '1122334455');
+    INSERT INTO Passenger (Passenger_ID, Passenger_Name, Contact_No) VALUES ('P004', 'David Black', '6677889900');
+    INSERT INTO Passenger (Passenger_ID, Passenger_Name, Contact_No) VALUES ('P005', 'Eve Brown', '2233445566');
+END;
+/
+
+-- Insert values into the Route table
+BEGIN
+    INSERT INTO Route (Route_No, Start_Point, Destination, Total_Distance) VALUES ('101', 'City A', 'City B', '200 km');
+    INSERT INTO Route (Route_No, Start_Point, Destination, Total_Distance) VALUES ('102', 'City C', 'City D', '150 km');
+    INSERT INTO Route (Route_No, Start_Point, Destination, Total_Distance) VALUES ('103', 'City E', 'City F', '300 km');
+END;
+/
+
+
+-- Insert values into the Buses table
+BEGIN
+    INSERT INTO Buses (Bus_No, Seating_Capacity, Type, Driver_Name) VALUES ('001', 50, 'AC', 'John Doe');
+    INSERT INTO Buses (Bus_No, Seating_Capacity, Type, Driver_Name) VALUES ('002', 40, 'Non-AC', 'Jane Smith');
+    INSERT INTO Buses (Bus_No, Seating_Capacity, Type, Driver_Name) VALUES ('003', 55, 'AC', 'Mike Green');
+END;
+/
+
+
+-- Insert values into the Bus_Tickets table
+BEGIN
+    INSERT INTO Bus_Tickets (Ticket_No, Passenger_ID, Travel_Date, Seat_No, Status, Bus_No, Route_No) VALUES ('T001', 'P001', TO_DATE('2024-09-18', 'YYYY-MM-DD'), 10, 'Confirmed', '001', '101');
+    INSERT INTO Bus_Tickets (Ticket_No, Passenger_ID, Travel_Date, Seat_No, Status, Bus_No, Route_No) VALUES ('T002', 'P002', TO_DATE('2024-09-18', 'YYYY-MM-DD'), 12, 'Booked', '001', '101');
+    INSERT INTO Bus_Tickets (Ticket_No, Passenger_ID, Travel_Date, Seat_No, Status, Bus_No, Route_No) VALUES ('T003', 'P003', TO_DATE('2024-09-19', 'YYYY-MM-DD'), 5, 'Confirmed', '002', '102');
+    INSERT INTO Bus_Tickets (Ticket_No, Passenger_ID, Travel_Date, Seat_No, Status, Bus_No, Route_No) VALUES ('T004', 'P004', TO_DATE('2024-09-19', 'YYYY-MM-DD'), 8, 'Canceled', '002', '102');
+    INSERT INTO Bus_Tickets (Ticket_No, Passenger_ID, Travel_Date, Seat_No, Status, Bus_No, Route_No) VALUES ('T005', 'P005', TO_DATE('2024-09-20', 'YYYY-MM-DD'), 15, 'Booked', '003', '103');
+END;
+/
+
+
+
+
+
+
+
+
+
+select * from Passenger;
+select * from Route;
+select * from Buses;
+select * from Bus_Tickets;
+
+DESCRIBE Passenger;
+
+
+
+
+-- 1
+SELECT Ticket_No, Travel_Date, Seat_No
+FROM Bus_Tickets
+WHERE Status = 'Confirmed';
+
+-- 2 
+SELECT Passenger_Name
+FROM Passenger
+WHERE LENGTH(Contact_No) = (
+    SELECT MAX(LENGTH(Contact_No)) FROM Passenger
+);
+
+-- 3 
+SELECT Travel_Date, COUNT(*) AS Total_Booked
+FROM Bus_Tickets
+WHERE Status = 'Booked'
+GROUP BY Travel_Date;
+
+
+-- 4 
+
+4.1 
+SELECT Passenger_Name
+FROM Passenger
+WHERE Passenger_ID = (
+    SELECT Passenger_ID FROM Bus_Tickets WHERE Ticket_No = 'T001'
+);
+
+4.2
+SELECT Seating_Capacity
+FROM Buses
+WHERE Bus_No = (
+    SELECT Bus_No FROM Bus_Tickets WHERE Ticket_No = 'T004'
+);
+
+4.3
+SELECT Passenger_Name
+FROM Passenger
+WHERE Passenger_ID IN (
+    SELECT Passenger_ID
+    FROM Bus_Tickets
+    WHERE Travel_Date IN (
+        SELECT Travel_Date FROM Bus_Tickets WHERE Travel_Date = '2024-09-18'
+    )
+);
+
+4.4
+
+SELECT Ticket_No
+FROM Bus_Tickets
+WHERE Passenger_ID IN (
+    SELECT Passenger_ID
+    FROM Passenger
+    WHERE Contact_No LIKE '1%'
+);
+
+-- 5
+
+5.1
+SELECT BT.Ticket_No, P.Passenger_Name
+FROM Bus_Tickets BT
+INNER JOIN Passenger P ON BT.Passenger_ID = P.Passenger_ID;
+
+5.2
+SELECT B.Bus_No, BT.Ticket_No
+FROM Buses B
+LEFT JOIN Bus_Tickets BT ON B.Bus_No = BT.Bus_No;
+
+5.3 
+SELECT BT.Ticket_No, B.Bus_No
+FROM Bus_Tickets BT
+RIGHT JOIN Buses B ON BT.Bus_No = B.Bus_No;
+
+5.4
+SELECT P.Passenger_Name, BT.Ticket_No
+FROM Passenger P
+FULL OUTER JOIN Bus_Tickets BT ON P.Passenger_ID = BT.Passenger_ID;
+
+
+
+
+
+
+-- Simple View
+CREATE VIEW Simple_View AS
+SELECT 
+    BT.Ticket_No,P.Passenger_Name,BT.Travel_Date
+FROM 
+    Bus_Tickets BT
+JOIN 
+    Passenger P ON BT.Passenger_ID = P.Passenger_ID;
+
+
+select * from Simple_View;
+DESCRIBE Simple_View;
+
+
+
+-- Complex view 
+
+CREATE VIEW Complex_View AS
+SELECT 
+    BT.Ticket_No,P.Passenger_Name,BT.Travel_Date,BT.Seat_No,B.Bus_No,B.Driver_Name,R.Start_Point,R.Destination,R.Total_Distance
+FROM 
+    Bus_Tickets BT
+INNER JOIN 
+    Passenger P ON BT.Passenger_ID = P.Passenger_ID
+LEFT JOIN 
+    Buses B ON BT.Bus_No = B.Bus_No
+FULL OUTER JOIN 
+    Route R ON BT.Route_No = R.Route_No
+WHERE 
+    BT.Status = 'Confirmed' OR BT.Status IS NULL;
+
+DESCRIBE Complex_View;
+
+
+
+
+
+
