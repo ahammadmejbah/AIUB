@@ -1,0 +1,45 @@
+
+
+select ename
+from emp
+where sal > (select sal 
+from emp
+where ename = 'JONES')
+
+//find the ename and job where job must be matched with empno 7369 and sal must be grater than the empno of 7876
+SELECT  ename, job 
+FROM  emp
+WHERE job = 
+ 	(SELECT job 
+         FROM emp
+         WHERE empno = 7369)
+AND sal > 
+        (SELECT  sal
+         FROM	emp
+         WHERE	empno = 7876)
+
+//find the deptno and mininum sal for department wise where minimum salary must be greater than the minimum salary of dept no 20.
+SELECT	deptno, MIN(sal)
+FROM	emp
+GROUP BY deptno
+HAVING	MIN(sal) > 
+                  (SELECT MIN(sal)
+               	   FROM	emp
+                   WHERE deptno = 20)
+order by deptno
+
+//find the empno, ename where sal must be equal to the dept wise minimum salary
+SELECT empno, ename
+FROM   emp
+WHERE  sal in 
+            (SELECT   MIN(sal)
+             FROM      emp
+             GROUP BY  deptno);
+
+
+SELECT ename, job
+FROM   emp
+WHERE  job = 
+                (SELECT	job
+		FROM	emp
+         	WHERE	ename='SMYTHE');

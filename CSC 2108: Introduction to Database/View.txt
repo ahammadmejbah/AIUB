@@ -1,0 +1,38 @@
+//simple view
+CREATE VIEW empvu10 AS 
+SELECT	empno, ename, job
+FROM emp
+WHERE deptno = 10;
+
+desc empvu10 
+select * from empvu10 
+
+CREATE VIEW salvu30 AS 
+SELECT empno EMPLOYEE_NUMBER, ename NAME, sal SALARY
+FROM emp
+WHERE deptno = 30;
+
+select * from salvu30
+select salary from salvu30
+where name = 'TURNER'
+
+CREATE OR REPLACE VIEW empvu10 (employee_number, employee_name, job_title) AS 
+SELECT 	empno, ename, job
+FROM emp
+WHERE deptno = 10;
+
+select * from empvu10
+
+//complex view
+CREATE VIEW dept_sum_vu (name, minsal, maxsal, avgsal) AS 
+SELECT	d.dname, MIN(e.sal), MAX(e.sal), ROUND(AVG(e.sal))
+FROM emp e, dept d
+WHERE e.deptno = d.deptno
+GROUP BY d.dname;
+
+select * from dept_sum_vu
+
+//drop view
+drop view empvu10
+drop view salvu30
+drop view dept_sum_vu
